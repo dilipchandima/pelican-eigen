@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abhaya+Libre:400,700&amp;subset=sinhala">
+    <link href="{{ SITEURL }}/theme/static/css/style.css" rel="stylesheet" />
+    {% if FAVICON %}
+    <link
+      rel="shortcut icon"
+      href="{{ SITEURL }}/{{ FAVICON }}"
+      type="image/x-icon"
+    />
+    {% endif %}
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    {% if FEED_ALL_ATOM %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}"
+      type="application/atom+xml"
+      rel="alternate"
+      title="{{ SITENAME }} Full Atom Feed"
+    />
+    {% endif %} {% if FEED_ALL_RSS %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}"
+      type="application/rss+xml"
+      rel="alternate"
+      title="{{ SITENAME }} Full RSS Feed"
+    />
+    {% endif %} {% if FEED_ATOM %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}"
+      type="application/atom+xml"
+      rel="alternate"
+      title="{{ SITENAME }} Atom Feed"
+    />
+    {% endif %} {% if FEED_RSS %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}"
+      type="application/rss+xml"
+      rel="alternate"
+      title="{{ SITENAME }} RSS Feed"
+    />
+    {% endif %}  {% if TAG_FEED_ATOM and tag %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ TAG_FEED_ATOM|format(tag.slug) }}"
+      type="application/atom+xml"
+      rel="alternate"
+      title="{{ SITENAME }} Tags Atom Feed"
+    />
+    {% endif %} {% if TAG_FEED_RSS and tag %}
+    <link
+      href="{{ FEED_DOMAIN }}/{{ TAG_FEED_RSS|format(tag.slug) }}"
+      type="application/rss+xml"
+      rel="alternate"
+      title="{{ SITENAME }} Tags RSS Feed"
+    />
+    {% endif %} {% endblock head %}
+  </head>
+
+  <body id="index" class="archive">
+    <div class="header">
+      <div class="top-bar"></div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">{{ SITENAME }} {{ SITESUBTITLE }}</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav ml-auto">
+            {% for p in pages %}
+            <li class="nav-item">
+              <a {% if p == page %} class="nav-link active"{% else %} class="nav-link"{% endif %} href="{{ SITEURL }}/{{ p.url }}">
+                {{ p.title }}
+              </a>
+            </li>
+           {% endfor %} 
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Categories
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% for cat, articles in categories|sort %}
+                  <a class="dropdown-item" href="{{ SITEURL }}/{{ cat.url }}">{{ cat.name }}</a>
+                {% endfor %}
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ SITEURL }}/archives.html"
+                >Archives</a
+              >
+            </li>
+            {% if GITHUB %}
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" href="{{GITHUB}}"
+                >GitHub</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      {% block content %} {% endblock %}
+    </div>
+
+    <div class="blog-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4"><p class="site-name">{{ SITENAME }}</p></div>
+          <div class="col-lg-8">
+            <h4 style="margin-top: 0;">Tags</h4>
+              {% for tag in tags %}
+                <span class="tag-article"
+                  ><a href="{{ SITEURL }}/{{ tag.0.url }}">{{ tag.0 }}</a>
+                </span>
+              {% endfor %}
+              <hr>
+              <h4 style="margin-top: 0;">Categories</h4>
+              {% for cat, articles in categories|sort %}
+                <span class="tag-article"
+                  ><a href="{{ SITEURL }}/{{ cat.url }}">{{ cat.name }}</a>
+                </span>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer id="contentinfo" class="footer">
+      <address id="about" class="vcard body">
+        &copy; <a href="{{SITEURL}}">{{SITENAME}}</a> Proudly powered by
+        <a href="http://getpelican.com/">Pelican</a>
+      </address>
+    </footer>
+
+    {% include 'analytics.html' %} {% include 'piwik.html' %}
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
